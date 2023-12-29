@@ -1,7 +1,8 @@
 package pro.sky.javacoursepart2;
 
+import pro.sky.javacoursepart2.intList.IntList;
+import pro.sky.javacoursepart2.intList.IntListImpl;
+
 public class Main {
-    public static void main(String[] args) {
-        System.out.println("Hello world!");
-    }
+    private IntList list = new IntListImpl();
 }
