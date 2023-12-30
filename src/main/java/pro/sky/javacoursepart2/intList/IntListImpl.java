@@ -63,7 +63,7 @@ public class IntListImpl implements IntList {
         return removed;
     }
 
-//    @Override // for contains method with binary search go to containsSorted method
+//    @Override
 //    public boolean contains(Integer item) {
 //        checkItem(item);
 //        for (int i = 0; i < size; i++) {
