@@ -97,6 +97,12 @@ class IntListImplTest {
         assertFalse(list.contains(404));
     }
 
+    @Test
+    void containsSortedMethodChecksIfIntListContainsGivenIntAndSortIntList() {
+        assertTrue(list.containsSorted(15));
+        assertFalse(list.containsSorted(404));
+    }
+
     // [15, 4, 37, 7, 99]
     @Test
     void indexOfMethodReturnsFirstIndexOfGivenItemIfItIsFound() {

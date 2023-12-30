@@ -6,6 +6,9 @@ public interface IntList {
     int set(int index, Integer item);
     int remove(int index);
     boolean contains(Integer item);
+
+    boolean containsSorted(Integer item);
+
     int indexOf(Integer item);
     int lastIndexOf(Integer item);
     int get(int index);

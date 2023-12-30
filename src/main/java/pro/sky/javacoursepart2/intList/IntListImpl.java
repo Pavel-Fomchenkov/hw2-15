@@ -2,6 +2,8 @@ package pro.sky.javacoursepart2.intList;
 
 import pro.sky.javacoursepart2.exceptions.*;
 
+import java.util.Arrays;
+
 public class IntListImpl implements IntList {
     private int capacity = 10; // storage value (default value is 10)
     private int[] storage = new int[capacity];
@@ -66,13 +68,20 @@ public class IntListImpl implements IntList {
         return removed;
     }
 
-    @Override
+    @Override // for contains method with binary search go to containsSorted method
     public boolean contains(Integer item) {
         checkItem(item);
         for (int i = 0; i < size; i++) {
             if (item.equals(storage[i])) return true;
         }
         return false;
+    }
+
+    @Override
+    public boolean containsSorted(Integer item) {
+        checkItem(item);
+        sortInsertion();
+        return searchBinary(item) > 0;
     }
 
     @Override
@@ -96,7 +105,7 @@ public class IntListImpl implements IntList {
     @Override
     public int get(int index) {
         checkIndex(index);
-        if(index >= size) throw new ItemNotFoundException("There is no element in storage with index " + index);
+        if (index >= size) throw new ItemNotFoundException("There is no element in storage with index " + index);
         return storage[index];
     }
 
@@ -146,5 +155,37 @@ public class IntListImpl implements IntList {
         if (index >= capacity)
             throw new InsufficientCapacityException("There is no space for index " + index + " item");
     }
+
+    private void sortInsertion() {
+        for (int i = 1; i < size; i++) {
+            int temp = storage[i];
+            int j = i;
+            while (j > 0 && storage[j - 1] >= temp) {
+                storage[j] = storage[j - 1];
+                j--;
+            }
+            storage[j] = temp;
+        }
+    }
+
+    private int searchBinary(int item) {
+        int minIdx = 0;
+        int maxIdx = size - 1;
+        while (minIdx <= maxIdx) {
+            int midIdx = (minIdx + maxIdx) / 2;
+
+            if (item == storage[midIdx]) {
+                return midIdx;
+            }
+
+            if (item < storage[midIdx]) {
+                maxIdx = midIdx - 1;
+            } else {
+                minIdx = midIdx + 1;
+            }
+        }
+        return -1;
+    }
+
 
 }
