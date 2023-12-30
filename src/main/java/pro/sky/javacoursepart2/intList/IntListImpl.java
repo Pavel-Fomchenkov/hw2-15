@@ -2,8 +2,6 @@ package pro.sky.javacoursepart2.intList;
 
 import pro.sky.javacoursepart2.exceptions.*;
 
-import java.util.Arrays;
-
 public class IntListImpl implements IntList {
     private int capacity = 10; // storage value (default value is 10)
     private int[] storage = new int[capacity];
@@ -19,9 +17,6 @@ public class IntListImpl implements IntList {
         this.capacity = capacity;
     }
 
-    // Добавление элемента.
-    // Вернуть добавленный элемент
-    // в качестве результата выполнения.
     @Override
     public int add(Integer item) {
         checkItem(item);
@@ -68,20 +63,21 @@ public class IntListImpl implements IntList {
         return removed;
     }
 
-    @Override // for contains method with binary search go to containsSorted method
-    public boolean contains(Integer item) {
-        checkItem(item);
-        for (int i = 0; i < size; i++) {
-            if (item.equals(storage[i])) return true;
-        }
-        return false;
-    }
+//    @Override // for contains method with binary search go to containsSorted method
+//    public boolean contains(Integer item) {
+//        checkItem(item);
+//        for (int i = 0; i < size; i++) {
+//            if (item.equals(storage[i])) return true;
+//        }
+//        return false;
+//    }
 
     @Override
-    public boolean containsSorted(Integer item) {
+    public boolean contains(Integer item) {
         checkItem(item);
-        sortInsertion();
-        return searchBinary(item) > 0;
+        int[] storageCopy = toArray();
+        sortInsertion(storageCopy);
+        return searchBinary(storageCopy, item);
     }
 
     @Override
@@ -156,36 +152,34 @@ public class IntListImpl implements IntList {
             throw new InsufficientCapacityException("There is no space for index " + index + " item");
     }
 
-    private void sortInsertion() {
+    private void sortInsertion(int[] storageCopy) {
         for (int i = 1; i < size; i++) {
-            int temp = storage[i];
+            int temp = storageCopy[i];
             int j = i;
-            while (j > 0 && storage[j - 1] >= temp) {
-                storage[j] = storage[j - 1];
+            while (j > 0 && storageCopy[j - 1] >= temp) {
+                storageCopy[j] = storageCopy[j - 1];
                 j--;
             }
-            storage[j] = temp;
+            storageCopy[j] = temp;
         }
     }
 
-    private int searchBinary(int item) {
+    private boolean searchBinary(int[] storageCopy, int item) {
         int minIdx = 0;
         int maxIdx = size - 1;
         while (minIdx <= maxIdx) {
             int midIdx = (minIdx + maxIdx) / 2;
 
-            if (item == storage[midIdx]) {
-                return midIdx;
+            if (item == storageCopy[midIdx]) {
+                return true;
             }
 
-            if (item < storage[midIdx]) {
+            if (item < storageCopy[midIdx]) {
                 maxIdx = midIdx - 1;
             } else {
                 minIdx = midIdx + 1;
             }
         }
-        return -1;
+        return false;
     }
-
-
 }
